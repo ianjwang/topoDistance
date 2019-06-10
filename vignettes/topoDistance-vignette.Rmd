@@ -1,0 +1,116 @@
+---
+title: "Introduction to topoDistance"
+author: "Ian J. Wang"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{topoDistance-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 6,
+  fig.height = 4)
+
+```
+
+```{r setup, include = FALSE}
+library(topoDistance)
+library(gdistance)
+library(RColorBrewer)
+library(scales)
+```
+
+The topoDistance package provides functions for calculating topographic distances and identifying and plotting topographic paths.  Unlike the topographically-corrected distances calculated by some GIS software, which just adjust for elevational changes along a straight-line path between points, topoDistance calculates the distance along the shortest topographic path between points, which is more likely to realistically reflect biological movement on a topographically complex landscape (Wang & Shaffer, 2017).
+
+Identifying topographic paths and calculating topographic distances is valuable for a variety of disciplines, from landscape genetics to community ecology.  For example, topographic distances have been shown to correlate strongly with genetic distances (e.g. Goldberg & Waits, 2010; Murphy et al., 2010; Wang & Shaffer, 2017) and with differences in community composition (e.g. Cañedo-Argüelles et al., 2015; Dong et al., 2016; Glassman, et al., 2017) in a variety of systems.  
+
+## Calculating Topographic Distances
+Identifying shortest topographic paths and calculating topographic distances is straightforward with the topoDist() function.  All that is required is an elevation raster (DEM) and a set of geographic points.  The topoDistance package contains a raster dataset that includes a DEM for part of Yosemite National Park.  We can start by loading the data and plotting the DEM.
+```{r}
+plot(Yosemite$DEM, col = terrain.colors(99))
+```
+
+Next we define the set of points between which we will find the topographic paths.  The format for the points can be a two-column matrix (longitude and latitude) or a SpatialPoints object.
+```{r}
+xy <- matrix(ncol = 2, byrow = TRUE,
+             c(-119.5566, 37.72474,
+               -119.5157, 37.76688,
+               -119.4718, 37.76078))
+colnames(xy) <- c("longitude", "latitude")
+xy
+```
+
+Now, to calculate the topographic distances and paths, we just need to call the topoDist() function.  The topoDist() function generates a topographic distance surface by calculating the topographic distance between cells as the hypotenuse of their horizontal and vertical distances.  These distances are assignd to the weights of vertices between the nodes for each cell on a landscape graph.  topoDist() then calls on functions in the gdistance (van Etten, 2015) and igraph (Csardi & Nepusz, 2016) packages.
+
+To calculate the shortest topographic distances, we only need to specify the DEM and spatial coordinates to use.
+```{r}
+tdist <- topoDist(Yosemite$DEM, xy, paths = TRUE)
+tdist
+```
+When paths = TRUE, topoDist() returns a list that contains [[1]] the matrix of pairwise topographic distances between points (in meters or projection units, depending on the coordinate reference system) and [[2]] a SpatialLines object containing the shortest topographic paths.  Whe paths = FALSE, topoDist() only returns the matrix of topographic distances.
+
+## Mapping Topographic Paths
+We can map where the shortest topographic paths are on the landscape by using the topoPathMap() function.
+```{r}
+topoPathMap(Yosemite$DEM, xy, topoPaths = tdist, type = "hillshade",
+            pathWidth = 4, cex = 2, bg = "blue")
+```
+
+## Topographic Least Cost Paths
+The shortest topographic path distances calculated by the topoDist() function consider only the total overland distances between points, but in some cases we may also want to account for landscape resistance to movement.  Resistance-based measures of geographic distance, like those produced by least cost path analysis (LCPA) and circuit theory analysis, are popular in landscape genetics and movement ecology (McRae & Beier, 2007; Wang & Shaffer, 2017).  To combine resistance-based distance with topographic distance, the topoDistance package provides the topoLCP() function for calculating topographic least cost path distances.  The topoLCP() function topographically corrects the resistance distances by multiplying the resistance along vertices in the landscape graph by the topographic distance between the nodes they connect  
+
+The second layer in the Yosemite raster stack is a raster of habitat suitability values from a species distribution model (SDM) constructed for the western fence lizard (Sceloporus occidentalis) in the Yosemite National Park region.  We can plot this layer with a common SDM color scheme to see how habitat suitability is distributed.
+```{r}
+sdmColors <- colorRampPalette(c("blue", "green", "yellow", "orange", "red"), space = "rgb", interpolate = "linear")
+plot(Yosemite$SDM, col = sdmColors(99))
+```
+
+More suitable habitat is presumed to have lower resistance to movement, so we can use this raster as a conductance surface (where conductance is the inverse of resistance).  Along with the DEM and spatial coordinates, we can then use the topoLCP() function to identify topographic least cost paths and calculate their distances.  
+```{r}
+tLCP <- topoLCP(Yosemite$DEM, costSurface = Yosemite$SDM, pts = xy, paths = TRUE)
+tLCP
+```
+As with topoDist(), topoLCP returns a list that contains [[1]] the matrix of pairwise topographic distances between points and [[2]] a SpatialLines object containing the shortest topographic paths when paths = TRUE.  Whe paths = FALSE, topoLCP() returns only the matrix of topographic distances.
+
+We can use the topoPathMap() function to map where the topographic least cost paths on the landscape.  When a raster is supplied for the costSurface argument, the resistance surface will be superimposed on the elevation raster (if type = "hillshade").
+```{r}
+topoPathMap(Yosemite$DEM, xy, topoPaths = tLCP, type = "hillshade",
+            costSurface = Yosemite$SDM, pathWidth = 4, pathColor = "purple")
+```
+
+We can always work with the topographic paths identified by topoDist() or topoLCP() using any functions that operate on SpatialLines objects.  For example, if we want to compare the shortest topographic paths to the topographic least cost paths (TLCPs), we can plot the TLCPs using topoPathMap() and then plot the shortest topographic paths using the lines() function.
+```{r}
+topoPathMap(Yosemite$DEM, xy, topoPaths = tLCP, type = "hillshade",
+            costSurface = Yosemite$SDM, pathWidth = 4, pathColor = "purple")
+lines(tdist[[2]], lty = 2, lwd = 2)
+```
+
+## Topographic Path Cross Sections
+Finally, we can use the topoProfile() function to plot topographic cross sections (elevation profiles) for each of the paths.  These can be useful for better understanding the trajectory of a path or identifying landscape features of interest along the paths.  If we set the plot type to plotly (type = "plotly") then topoProfile() generates an interactive plot that allows us to find the elevation and path distance for at any point along each path.
+```{r, warning=FALSE}
+topoProfile(Yosemite$DEM, topoPaths = tLCP, pts = 1000, 
+            type = "base", singlePlot = TRUE)
+```
+
+### References
+Cañedo‐Argüelles, M., Boersma, K. S., Bogan, M. T., Olden, J. D., Phillipsen, I., Schriever, T. A., & Lytle, D. A. (2015). Dispersal strength determines meta‐community structure in a dendritic riverine network. Journal of Biogeography, 42(4), 778–790. 
+
+Csardi G., & Nepusz T. (2006). The igraph software package for complex network research, International Journal of Complex Systems, 1695. http://igraph.org
+
+Dong, X., Li, B., He, F., Gu, Y., Sun, M., Zhang, H., Tan, L., Xiao, W., Liu, S., & Cai, Q. (2016). Flow directionality, mountain barriers and functional traits determine diatom metacommunity structuring of high mountain streams. Scientific Reports, 6, 24711. 
+
+Glassman, S. I., Wang, I. J., & Bruns, T. D. (2017). Environmental filtering by pH and soil nutrients drives community assembly in fungi at fine spatial scales. Molecular Ecology, 26(24), 6960–6973. 
+
+Goldberg, C. S., & Waits, L. P. (2010). Comparative landscape genetics of two pond-breeding amphibian species in a highly modified agricultural landscape. Molecular Ecology, 19(17), 3650–3663. 
+
+McRae, B. H., & Beier, P. (2007). Circuit theory predicts gene flow in plant and animal populations. Proceedings of the National Academy of Sciences, 104(50), 19885–19890.
+
+Murphy, M. A., Evans, J. S., & Storfer, A. (2010). Quantifying Bufo boreas connectivity in Yellowstone National Park with landscape genetics. Ecology, 91(1), 252–261. 
+
+van Etten, J. (2015). gdistance: distances and routes on geographical grids. Available: http://cran.r-project.org/web/packages/gdistance/ 
+
+Wang, I. J., & Shaffer, H. B. (2017). Population genetic and field-ecological analyses return similar estimates of dispersal over space and time in an endangered amphibian. Evolutionary Applications, 10(6), 630–639. doi:10.1111/eva.12479
