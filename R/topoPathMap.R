@@ -17,6 +17,7 @@
 #' @param bg character (optional). Background color for spatial points.
 #' @param col character (optional). Color for spatial points.
 #' @param pch numeric (optional). Shape of spatial points.
+#' @param ... character, logical, or numeric (optional). Additional arguments to be passed to the plot function.
 #' @return Plot of topographic paths
 #' @details
 #' The objects supplied for the DEM and pts arguments (and, optionally, costSurface) are generally those used to calculate the topographic paths using topoDist or topoLCP.
@@ -46,17 +47,17 @@
 #' @export
 topoPathMap <- function(DEM, pts, topoPaths, type = "hillshade", costSurface = NULL, costColors = NULL,
                         pathWidth = 2, pathColor = "darkred", alpha = 0.65, angle = 45, direction = 0,
-                        cex = 2, bg = "gray", col = "black", pch = 21){
+                        cex = 2, bg = "gray", col = "black", pch = 21, ...){
   if(is.list(topoPaths)) topoPaths <- topoPaths[[2]]
   if(type == "terrain"){
-    plot(DEM, col = terrain.colors(99))
+    plot(DEM, col = terrain.colors(99), ...)
   } else if (type == "topo"){
-    plot(DEM, col = topo.colors(99))
+    plot(DEM, col = topo.colors(99), ...)
   } else if (type == "hillshade"){
     slope <- terrain(DEM, opt = "slope")
     aspect <- terrain(DEM, opt = "aspect")
     hill <- hillShade(slope, aspect, angle = angle, direction = direction)
-    plot(hill, col = grey(0:100/100), legend = FALSE)
+    plot(hill, col = grey(0:100/100), legend = FALSE, ...)
     if(!is.null(costSurface)){
       if(is.null(costColors)){
         costScheme <- colorRampPalette(c("blue", "green", "yellow", "orange", "red"), space = "rgb", interpolate = "linear")
