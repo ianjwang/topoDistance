@@ -7,7 +7,7 @@
 topoPathMap(DEM, pts, topoPaths, type = "hillshade",
   costSurface = NULL, costColors = NULL, pathWidth = 2,
   pathColor = "darkred", alpha = 0.65, angle = 45, direction = 0,
-  cex = 2, bg = "gray", col = "black", pch = 21)
+  cex = 2, bg = "gray", col = "black", pch = 21, ...)
 }
 \arguments{
 \item{DEM}{A RasterLayer for digital elevation model (DEM) data.}
@@ -39,6 +39,8 @@ topoPathMap(DEM, pts, topoPaths, type = "hillshade",
 \item{col}{character (optional). Color for spatial points.}
 
 \item{pch}{numeric (optional). Shape of spatial points.}
+
+\item{...}{character, logical, or numeric (optional). Additional arguments to be passed to the plot function.}
 }
 \value{
 Plot of topographic paths
@@ -59,11 +61,4 @@ xy <- matrix(ncol = 2, byrow = TRUE,
    -119.4718, 37.76078))
 YosPaths <- topoDist(Yosemite$DEM, xy, paths = TRUE)
 topoPathMap(Yosemite$DEM, xy, topoPaths = YosPaths)
-
-xy <- matrix(ncol = 2, byrow = TRUE,
-   c(-119.5566, 37.72474,
-   -119.4718, 37.76078))
-YosLCP <- topoLCP(Yosemite$DEM, Yosemite$SDM, xy, paths = TRUE)
-topoPathMap(Yosemite$DEM, xy, topoPaths = YosLCP, costSurface = Yosemite$SDM,
-    pathWidth = 3, pathColor = "purple", cex = 2, pch = 16, bg = "blue")
 }

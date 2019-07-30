@@ -4,16 +4,18 @@
 \alias{topoDist}
 \title{Topographic distances and paths}
 \usage{
-topoDist(DEM, pts, directions = 8, paths = FALSE)
+topoDist(DEM, pts, directions = 8, paths = FALSE, zweight = 1)
 }
 \arguments{
 \item{DEM}{A RasterLayer for digital elevation model (DEM) data.}
 
 \item{pts}{A SpatialPoints object or two-column matrix with xy coordinates for the geographic points from which to calculate pairwise distances and paths.}
 
-\item{directions}{numberic (default = 8). The number of directions for movement between cells, either 4 or 8.}
+\item{directions}{numeric (default = 8). The number of directions for movement between cells, either 4 or 8.}
 
 \item{paths}{logical. Default is FALSE, in which case only topographic distances are calculated.  If TRUE, topographic paths are also identified.}
+
+\item{zweight}{numeric (default = 1). The weight to be applied to the elevation (z) distances relative to the horizontal (xy) distances.}
 }
 \value{
 Matrix of topographic distances (if paths = FALSE), or a list containing a matrix of topographic distances and the topographic paths as an object of class SpatialLines (if paths = TRUE).

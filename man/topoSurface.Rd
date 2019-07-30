@@ -4,7 +4,7 @@
 \alias{topoSurface}
 \title{Topographic distance surface}
 \usage{
-topoSurface(DEM, conductance = TRUE, directions = 8)
+topoSurface(DEM, conductance = TRUE, directions = 8, zweight = 1)
 }
 \arguments{
 \item{DEM}{A RasterLayer for digital elevation model (DEM) data.}
@@ -12,6 +12,8 @@ topoSurface(DEM, conductance = TRUE, directions = 8)
 \item{conductance}{logical (default = TRUE). If FALSE, resistance values are returned.  If TRUE, conductance values (1/resistance) are returned.}
 
 \item{directions}{numeric (default = 8). Directions of allowable movement between raster cells (4 or 8).}
+
+\item{zweight}{numeric (default = 1). The weight to be applied to the elevation (z) distances relative to the horizontal (xy) distances.}
 }
 \value{
 TransitionLayer
