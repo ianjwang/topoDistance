@@ -20,15 +20,9 @@
 #' @examples
 #' xy <- matrix(ncol = 2, byrow = TRUE,
 #'    c(-119.5566, 37.72474,
-#'    -119.4718, 37.76078))
+#'      -119.4718, 37.76078))
 #' YosPaths <- topoDist(Yosemite$DEM, xy, paths = TRUE)
-#' topoProfile(Yosemite$DEM, topoPaths = YosPaths, type = "base", cols = 2)
-#'
-#' xy <- matrix(ncol = 2, byrow = TRUE,
-#'    c(-119.5566, 37.72474,
-#'    -119.4718, 37.76078))
-#' YosLCP <- topoLCP(Yosemite$DEM, Yosemite$SDM, xy, paths = TRUE)
-#' topoProfile(Yosemite$DEM, YosLCP, pts = 1000, type = "plotly", singlePlot = TRUE)
+#' topoProfile(Yosemite$DEM, topoPaths = YosPaths)
 #' @import plotly
 #' @importFrom raster extract
 #' @import sp

@@ -32,13 +32,6 @@
 #'    -119.4718, 37.76078))
 #' YosPaths <- topoDist(Yosemite$DEM, xy, paths = TRUE)
 #' topoPathMap(Yosemite$DEM, xy, topoPaths = YosPaths)
-#'
-#' xy <- matrix(ncol = 2, byrow = TRUE,
-#'    c(-119.5566, 37.72474,
-#'    -119.4718, 37.76078))
-#' YosLCP <- topoLCP(Yosemite$DEM, Yosemite$SDM, xy, paths = TRUE)
-#' topoPathMap(Yosemite$DEM, xy, topoPaths = YosLCP, costSurface = Yosemite$SDM,
-#'     pathWidth = 3, pathColor = "purple", cex = 2, pch = 16, bg = "blue")
 #' @importFrom graphics legend lines par points polygon
 #' @importFrom grDevices colorRampPalette grey rainbow terrain.colors topo.colors
 #' @importFrom raster hillShade ncell terrain
