@@ -1,10 +1,10 @@
 Package: topoDistance
 Type: Package
 Title: Calculating Topographic Paths and Distances
-Version: 0.1.0
-Author: Ian J . Wang
-Maintainer: Ian J. Wang <ianwang@berkeley.edu>
-Description: topoDistance provides functions for calculating topographic distances and identifying and plotting topographic paths. Topographic distances can be calculated along shortest topographic paths or topographic least cost paths. Functions can map topographic paths on colored or hillshade maps and plot topographic cross sections (elevation profiles) for the paths.
+Version: 1.0
+Authors@R: person("Ian", "Wang", email = "ianwang@berkeley.edu",
+                  role = c("aut", "cre"))
+Description: A toolkit for calculating topographic distances and identifying and plotting topographic paths. Topographic distances can be calculated along shortest topographic paths or topographic least cost paths. Functions can map topographic paths on colored or hill shade maps and plot topographic cross sections (elevation profiles) for the paths.
 Depends: R (>= 3.1.0)
 License: GPL-3
 Encoding: UTF-8
