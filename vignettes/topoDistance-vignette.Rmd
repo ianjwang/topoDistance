@@ -111,6 +111,6 @@ McRae, B. H., & Beier, P. (2007). Circuit theory predicts gene flow in plant and
 
 Murphy, M. A., Evans, J. S., & Storfer, A. (2010). Quantifying Bufo boreas connectivity in Yellowstone National Park with landscape genetics. Ecology, 91(1), 252–261. 
 
-van Etten, J. (2015). gdistance: distances and routes on geographical grids. Available: http://cran.r-project.org/web/packages/gdistance/ 
+van Etten, J. (2015). gdistance: distances and routes on geographical grids. Available: https://CRAN.R-project.org/package=gdistance 
 
-Wang, I. J., & Shaffer, H. B. (2017). Population genetic and field-ecological analyses return similar estimates of dispersal over space and time in an endangered amphibian. Evolutionary Applications, 10(6), 630–639. doi:10.1111/eva.12479
+Wang, I. J., & Shaffer, H. B. (2017). Population genetic and field-ecological analyses return similar estimates of dispersal over space and time in an endangered amphibian. Evolutionary Applications, 10(6), 630–639. 
