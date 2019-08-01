@@ -40,8 +40,8 @@ If rows, cols, or limits are not specified, the most even arrangement will be de
 }
 \examples{
 xy <- matrix(ncol = 2, byrow = TRUE,
-   c(-119.5566, 37.72474,
-     -119.4718, 37.76078))
+   c(-119.5566, 37.7247,
+     -119.4718, 37.7608))
 YosPaths <- topoDist(Yosemite$DEM, xy, paths = TRUE)
 topoProfile(Yosemite$DEM, topoPaths = YosPaths)
 }
