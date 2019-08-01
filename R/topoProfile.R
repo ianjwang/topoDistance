@@ -19,8 +19,8 @@
 #'
 #' @examples
 #' xy <- matrix(ncol = 2, byrow = TRUE,
-#'    c(-119.5566, 37.72474,
-#'      -119.4718, 37.76078))
+#'    c(-119.5566, 37.7247,
+#'      -119.4718, 37.7608))
 #' YosPaths <- topoDist(Yosemite$DEM, xy, paths = TRUE)
 #' topoProfile(Yosemite$DEM, topoPaths = YosPaths)
 #' @import plotly
@@ -64,6 +64,8 @@ topoProfile <- function(DEM, topoPaths, pts = 100, type = "base", singlePlot = F
       legend(x = legendx, legend = names(topoPaths), pch = 15, col = colrs)
     } else {
       if(is.null(cols)) cols <- 1
+      opar <- par(no.readonly = TRUE)
+      on.exit(par(opar))
       par(mfrow = c(rows,cols))
       for(j in 1:length(elevations)){
         plot(pathDists[[j]], elevations[[j]], type = "l", lwd = 2,
