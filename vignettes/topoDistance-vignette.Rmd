@@ -51,7 +51,15 @@ To calculate the shortest topographic distances, we only need to specify the DEM
 tdist <- topoDist(Yosemite$DEM, xy, paths = TRUE)
 tdist
 ```
-When paths = TRUE, topoDist() returns a list that contains [[1]] the matrix of pairwise topographic distances between points (in meters or projection units, depending on the coordinate reference system) and [[2]] a SpatialLines object containing the shortest topographic paths.  Whe paths = FALSE, topoDist() only returns the matrix of topographic distances.
+When paths = TRUE, topoDist() returns a list that contains [[1]] the matrix of pairwise topographic distances between points (in meters or projection units, depending on the coordinate reference system) and [[2]] a SpatialLines object containing the shortest topographic paths.  When paths = FALSE, topoDist() only returns the matrix of topographic distances.
+
+The objects returned by topoDist() can be used in downstream applications or operated on by a variety of functions.  For example, if you wish to impose a maximum distance (e.g. because of dispersal limitation), then you can simple replace the values greater than the maximum in the distance matrix with NA.  
+```{r}
+td.mat <- tdist[[1]]
+td.mat[td.mat > 8000] <- NA
+td.mat
+```
+
 
 ## Mapping Topographic Paths
 We can map where the shortest topographic paths are on the landscape by using the topoPathMap() function.
