@@ -25,4 +25,6 @@ weights of vertices between the nodes for each cell on a landscape graph, and fu
 from the gdistance and igraph packages are used to find the shortest path between nodes.
 For topographic least cost paths, resistance distance weights are multiplied by the
 topographic distance weights to get topographically corrected least cost path distances.
+
+To see the preferable citation of the package, type citation("topoDistance").
 }
