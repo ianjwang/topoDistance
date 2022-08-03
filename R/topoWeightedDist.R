@@ -66,16 +66,11 @@ topoWeightedDist <- function(DEM, pts, directions = 8, paths = FALSE, hFunction 
   }
   wDistances <- as.matrix(gdistance::costDistance(w.dist, pts))
   if(paths){
+    sp.pairs <- combn(1:length(pts), m = 2)
     pathLines <- list()
-    z <- 1
-    for(i in 1:length(pts)){
-      for(j in 1:length(pts)){
-        if(i != j){
-          pathLines[[z]] <- gdistance::shortestPath(w.dist, pts[i], pts[j], output = "SpatialLines")
-          pathLines[[z]]@lines[[1]]@ID <- paste("Path", i, "-", j, sep = " ")
-          z <- z + 1
-        }
-      }
+    for(i in 1:ncol(sp.pairs)){
+      pathLines[[i]] <- gdistance::shortestPath(w.dist, pts[sp.pairs[1,i]], pts[sp.pairs[2,i]], output = "SpatialLines")
+      pathLines[[i]]@lines[[1]]@ID <- paste("Path", sp.pairs[1,i], "-", sp.pairs[2,i], sep = " ")
     }
     paths <- do.call(rbind, pathLines)
     return(list(wDistances, paths))
