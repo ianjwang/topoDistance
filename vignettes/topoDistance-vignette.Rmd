@@ -110,7 +110,7 @@ topoProfile(Yosemite$DEM, topoPaths = tLCP, pts = 1000,
 ### References
 Cañedo‐Argüelles, M., Boersma, K. S., Bogan, M. T., Olden, J. D., Phillipsen, I., Schriever, T. A., & Lytle, D. A. (2015). Dispersal strength determines meta‐community structure in a dendritic riverine network. Journal of Biogeography, 42(4), 778–790. 
 
-Csardi G., & Nepusz T. (2006). The igraph software package for complex network research, International Journal of Complex Systems, 1695. http://igraph.org
+Csardi G., & Nepusz T. (2006). The igraph software package for complex network research, International Journal of Complex Systems, 1695. https://igraph.org
 
 Dong, X., Li, B., He, F., Gu, Y., Sun, M., Zhang, H., Tan, L., Xiao, W., Liu, S., & Cai, Q. (2016). Flow directionality, mountain barriers and functional traits determine diatom metacommunity structuring of high mountain streams. Scientific Reports, 6, 24711. 
 
