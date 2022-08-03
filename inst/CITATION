@@ -1,0 +1,10 @@
+bibentry(bibtype = "Article",
+  textVersion = "Wang I.J. (2020) Topographic path analysis for modeling dispersal and functional connectivity: calculating topographic distances using the topoDistance R package. Methods in Ecology and Evolution, 11:265-272.",
+  header = "To cite topoDistance in publications use:",
+  author = "Ian J. Wang",
+  title = "Topographic path analysis for modeling dispersal and functional connectivity: calculating topographic distances using the topoDistance R package",
+  year = "2020",
+  journal = "Methods in Ecology and Evolution",
+  volume = "11",
+  pages = "265-272",
+  doi = "10.1111/2041-210X.13317")
